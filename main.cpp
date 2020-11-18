@@ -9,43 +9,42 @@ using namespace std;
 enum direction { h, v };  // расположение корабля на поле
 
 
-class Field//содержит массив кораблей
+
+class Game_observe//содержит поля и следит за окончанием игры
 {
 public:
-    Field() : field_(10, std::vector<int>(10, 0))
- {
-   init_data();
- }
- ~Field(){}
+    Game_observe() : field_(10, std::vector<int>(10, 0))
+    {
+//        init_data();
+    }
+    ~Game_observe(){}
 
- const std::vector<std::vector<int>>& get_vector() const
- {
-     return field_;
- }
+    std::vector<std::vector<int>>& get_vector()
+    {
+        return field_;
+    }
 
 
+    void shot(int x, int y)//принимает выстрел и проверят, куда попал
+    {
+
+    }
+
+
+    bool Game_over()//конец игры
+    {
+        return true;
+    }
 
 private:
 
- void init_data()//установка начального значения элементов массива
- {
-   for (int i = 0; i < 10; ++i)
-   {
-     for (int j = 0; j < 10; ++j)
-     {
-       data_[i][j] = 0;
-     }
-   }
- }
-
-
- int data_[10][10];
-
- std::vector<std::vector<int>> field_;
+    std::vector<std::vector<int>> field_;
 
 };
 
-class Drawer
+
+
+class Drawer//рисует все на свете
 {
 public:
  Drawer():
@@ -54,12 +53,12 @@ public:
  {}
  ~Drawer(){}
 
- void draw_field_player(const Field& field) const// рисует только поле игрока без рамки
+ void draw_field_player( Game_observe& field_player) const// рисует только поле игрока без рамки
  {
      int x = 4;
      int y = 3;
 
-     auto vector = field.get_vector();
+     auto vector = field_player.get_vector();
 
      for (int i = 0; i < 10; ++i)
      {
@@ -74,12 +73,12 @@ public:
      }
  }
 
- void draw_field_CPU(const Field& field)//рисует только поле компьютера без рамки
+ void draw_field_CPU( Game_observe& field_cpu)//рисует только поле компьютера без рамки
  {
      int x = 30;
      int y = 3;
 
-     auto vector = field.get_vector();
+     auto vector = field_cpu.get_vector();
 
      for (int i = 0; i < 10; ++i)
      {
@@ -225,13 +224,104 @@ void GoTo(int x, int y) const//установка курсора в нужную
     SetConsoleCursorPosition(hStdOut,coord);
 }
 
+
+
 private:
 int start_field_player_x;
 int start_field_player_y;
+};
+
+class Player_human
+{
+public:
+    Player_human(){}
+    ~Player_human(){}
+
+    void init_ship(Game_observe& my_Field)//создает корабль для своего поля d - количество палуб корабля
+    {
+//        находит свободную клетку.
+//        вызывает функцию, которая проверят возможность установки корабля в это место
+//        (корабль должен иметь по одной свободной клетке со всех сторон)
+        int X = 9;
+        int Y = 9;
+
+        std::vector<std::vector<int>>& Fi = my_Field.get_vector();
+
+        while(deck > 0)
+        {
+//            X = rand()%10;
+//            Y = rand()%10;
+
+            if(Fi[X][Y] == 0)
+            {
+               if(empty_place(Fi, X, Y))
+               {
+                  for(int i = 0; i < deck; ++i)
+                  {
+                      Fi[X][Y] = deck;
+                      ++Y;
+                  }
+                  --deck;
+               }
+            }            
+        }
+
+    }
 
 
+    bool fire()//выстрел
+    {
+        return true;
+    }
+
+
+    bool empty_place(std::vector<std::vector<int>>& t, int x, int y)//проверяет поле вокруг указанного адреса
+    {
+        int row = x - 1;
+        int column = y - 1;
+
+        for(int i = 0;i < deck; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                if(t[row][column] != 0)
+                {
+                    return false;
+                }
+                ++x;
+            }
+            ++y;
+        }
+
+        return true;
+    }
+
+private:
+
+    int deck = 4;//палубы корабля
+//    int p = 4;//координаты начала поля
+//    int t = 3;
 
 };
+
+class Player_CPU
+{
+public:
+    Player_CPU(){}
+    ~Player_CPU(){}
+
+    void init_ship()//генерация кораблей для своего поля
+    {
+
+    }
+
+    bool turn()//выстрел и оповещение про сделанный ход
+    {
+        return true;
+    }
+
+};
+
 
 
 
@@ -242,15 +332,18 @@ int main()
 {
 
  srand(time(NULL));
- Drawer d;
 
- Field field;
+ Drawer d;
+ Game_observe field_player;
+ Game_observe field_cpu;
+ Player_human Player;
 
 
  d.draw_border();
- d.draw_field_player(field);
- d.draw_field_CPU(field);
+ d.draw_field_player(field_player);
+ d.draw_field_CPU(field_cpu);
  d.draw_borders();
+ Player.init_ship(field_player);
 
 
 
