@@ -25,10 +25,10 @@ public:
     }
 
 
-    void shot(int x, int y)//принимает выстрел и проверят, куда попал
-    {
+//    void shot(int x, int y)//принимает выстрел и проверят, куда попал
+//    {
 
-    }
+//    }
 
 
     bool Game_over()//конец игры
@@ -53,7 +53,7 @@ public:
  {}
  ~Drawer(){}
 
- void draw_field_player( Game_observe& field_player) const// рисует только поле игрока без рамки
+ void draw_field_player( Game_observe& field_player) // рисует только поле игрока без рамки
  {
      int x = 4;
      int y = 3;
@@ -65,8 +65,16 @@ public:
          for (int j = 0; j < 10; ++j)
          {
              GoTo(x,y);
-             std::cout << vector[i][j];
+             if(vector[i][j] != 0)
+             {
+                 cout << "X";
+             }
+//             else
+//             {
+//                std::cout << vector[i][j];
+//             }
              x += 2;
+
          }
          ++y;
          x = 4;
@@ -237,37 +245,33 @@ public:
     Player_human(){}
     ~Player_human(){}
 
-    void init_ship(Game_observe& my_Field)//создает корабль для своего поля d - количество палуб корабля
+    void init_ship(Game_observe& my_Field, int deck)//создает корабль для своего поля d - количество палуб корабля
     {
 //        находит свободную клетку.
 //        вызывает функцию, которая проверят возможность установки корабля в это место
 //        (корабль должен иметь по одной свободной клетке со всех сторон)
-        int X = 9;
-        int Y = 9;
 
         std::vector<std::vector<int>>& Fi = my_Field.get_vector();
 
-        while(deck > 0)
-        {
-//            X = rand()%10;
-//            Y = rand()%10;
-
-            if(Fi[X][Y] == 0)
-            {
-               if(empty_place(Fi, X, Y))
-               {
-                  for(int i = 0; i < deck; ++i)
-                  {
-                      Fi[X][Y] = deck;
-                      ++Y;
-                  }
-                  --deck;
-               }
-            }            
-        }
+                flag = true;
+                while(flag)
+                {
+                    int X = rand() % 9;
+                    int Y = rand() % 9;
+                    if(empty_place(Fi, X, Y, deck))
+                      {
+                        cout << X << " " << Y << endl;
+                          flag = false;
+                          for(int k = 0; k < deck; ++k)
+                          {
+                              Fi[Y][X] = deck;
+                               ++X;
+                          };
+                      }
+                }
+cout << "bild ship: " << deck << endl;
 
     }
-
 
     bool fire()//выстрел
     {
@@ -275,23 +279,36 @@ public:
     }
 
 
-    bool empty_place(std::vector<std::vector<int>>& t, int x, int y)//проверяет поле вокруг указанного адреса
+    bool empty_place(std::vector<std::vector<int>>& t, int X1, int Y1, int deck1)//проверяет поле вокруг указанного адреса
     {
-        int row = x - 1;
-        int column = y - 1;
-
-        for(int i = 0;i < deck; ++i)
+        if((X1+deck1) > 9)
         {
-            for (int j = 0; j < 3; ++j)
-            {
-                if(t[row][column] != 0)
-                {
-                    return false;
-                }
-                ++x;
-            }
-            ++y;
+            return false;
         }
+
+        for (int y = Y1 - 1; y < (Y1 + 2); ++y)
+        {
+            for (int x = X1 - 1; x < (X1 + deck1+1); ++x)
+            {
+                if((x >= 0 && x <= 9) && (y >= 0 && y<= 9))
+                {
+                    if(t[y][x] != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+//            {
+//                if((x >= 0 && (x+deck+1) < 9) && (y >= 0 && y < 9))
+//                {
+//                    if(t[y][x] != 0)
+//                    {
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
 
         return true;
     }
@@ -299,8 +316,8 @@ public:
 private:
 
     int deck = 4;//палубы корабля
-//    int p = 4;//координаты начала поля
-//    int t = 3;
+    bool flag = true;
+
 
 };
 
@@ -333,19 +350,31 @@ int main()
 
  srand(time(NULL));
 
+// int num = rand() % 10;
+// int pum = rand() % 10;
+// int num = 5;//Y
+// int pum = 5;//X
+
  Drawer d;
- Game_observe field_player;
- Game_observe field_cpu;
+ Game_observe field_Player;
+ Game_observe field_Cpu;
  Player_human Player;
 
 
  d.draw_border();
- d.draw_field_player(field_player);
- d.draw_field_CPU(field_cpu);
+ d.draw_field_CPU(field_Cpu);
  d.draw_borders();
- Player.init_ship(field_player);
-
-
+ Player.init_ship(field_Player, 4);
+ Player.init_ship(field_Player, 3);
+ Player.init_ship(field_Player, 3);
+ Player.init_ship(field_Player, 2);
+ Player.init_ship(field_Player, 2);
+ Player.init_ship(field_Player, 2);
+ Player.init_ship(field_Player, 1);
+ Player.init_ship(field_Player, 1);
+ Player.init_ship(field_Player, 1);
+ Player.init_ship(field_Player, 1);
+ d.draw_field_player(field_Player);
 
 
 
