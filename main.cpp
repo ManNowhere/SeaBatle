@@ -424,7 +424,6 @@ bool hit_check(std::vector<std::vector<int>> &field_, int X, int Y, int &hits)//
     {
         ++hits;
         field_[Y][X] = 'X';
-//        d.draw_field_CPU(CP.get_vector());
         return true;
     }
     return false;
@@ -437,6 +436,7 @@ void Play()//игровой процесс
         Shot = true;
         while (Shot)
         {
+            d.GoTo(0, 15);
             Player.fire_human(X_shot, Y_shot);
             if(hit_check(CP.get_vector(), X_shot, Y_shot, human_hits))
             {
@@ -463,6 +463,7 @@ void Play()//игровой процесс
         Shot = true;
         while (Shot)
         {
+            d.GoTo(0, 15);
             CPU.fire_CPU(X_shot, Y_shot);
             if(hit_check(H.get_vector(), X_shot, Y_shot, cpu_hits))
             {
@@ -505,6 +506,7 @@ private:
 
 
 
+
 int main()
 {
 
@@ -514,19 +516,19 @@ int main()
 Game_observe A;
 
 A.d.draw_border();
-A.d.draw_borders();
 
 A.draw_ships();
 
 A.d.draw_field_player(A.H.get_vector());
 A.d.draw_field_CPU(A.CP.get_vector());
-cout << endl << endl;
+A.d.draw_borders();
+//cout << endl << endl;
 
 A.Play();
 
 
 
-
+//переделать выстрел
 
  return 0;
 }
