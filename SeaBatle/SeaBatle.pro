@@ -13,11 +13,13 @@ SOURCES += main.cpp \
     Player_human.cpp \
     Drawer.cpp \
     Player_CPU.cpp \
-    Game_observe.cpp
+    Game_observe.cpp \
+    Menu.cpp
 
 HEADERS += \
     AllField.h \
     Player_human.h \
     Drawer.h \
     Player_Cpu.h \
-    Game_observe.h
+    Game_observe.h \
+    Menu.h
