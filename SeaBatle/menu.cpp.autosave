@@ -27,9 +27,6 @@ using namespace std;
 
    void Menu::Selection()//содержимое меню
    {
-//       cout << "Level" << endl;
-//       cout << "Play" << endl;
-//       cout << "Exit" << endl;
        cout << "Enter select: ";
 
        cin >> num;

@@ -13,10 +13,7 @@ int main()
 {
 srand(time(NULL));
 
-//Game_observe A;
 Menu m;
-
-
 
 m.get_coor();
 m.A.d.GoTo(m.X_coor - (strlen("SEA BATLE")/2), m.Y_coor);
