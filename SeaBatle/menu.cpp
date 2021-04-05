@@ -2,6 +2,8 @@
 #include <iostream>
 #include <windows.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <iostream>
 using namespace std;
 
 
@@ -27,35 +29,42 @@ using namespace std;
 
    void Menu::Selection()//содержимое меню
    {
-//       cout << "Level" << endl;
-//       cout << "Play" << endl;
-//       cout << "Exit" << endl;
        cout << "Enter select: ";
 
-       cin >> num;
-
-       switch (num)
+       num = cin.get();
+       while(cin)
        {
-           case 1:
-               cout << "Level";//реализовать выбор сложности игры
-               break;
-           case 2:
-               cout << "Play";//запуск игры
-               system("cls");
-               A.d.draw_border();
+           cin.sync();
+           if(((num > 48) &&( num < 52)))
+           {
+           switch (num)
+               {
+                   case 49:
+                       cout << "Level";//реализовать выбор сложности игры
+                       return;
+                   case 50:
+                       cout << "Play";//запуск игры
+                       system("cls");
+                       A.d.draw_border();
+                       A.draw_ships();
+                       A.d.draw_field_player(A.H.get_vector());
+                       A.d.draw_field_CPU(A.CP.get_vector());
+                       A.d.draw_borders();
+                       A.Play();
+                       break;
+                   case 51:
+        //               exit(0);
+                   return;
+               };
 
-               A.draw_ships();
+                  // _getche();
+            }
+           A.d.GoTo(X_coor + (strlen("Enter select: ")/2), Y_coor + 5);
+           cout << " ";
+           A.d.GoTo(X_coor + (strlen("Enter select: ")/2), Y_coor + 5);
+           num = cin.get();
 
-               A.d.draw_field_player(A.H.get_vector());
+        }
 
-               A.d.draw_field_CPU(A.CP.get_vector());
-
-               A.d.draw_borders();
-               A.Play();
-               break;
-           case 3:
-           exit(0);
-               cout << "Exit";//выход из игры
-       };
    }
 

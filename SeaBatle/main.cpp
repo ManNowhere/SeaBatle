@@ -13,10 +13,7 @@ int main()
 {
 srand(time(NULL));
 
-//Game_observe A;
 Menu m;
-
-
 
 m.get_coor();
 m.A.d.GoTo(m.X_coor - (strlen("SEA BATLE")/2), m.Y_coor);
@@ -27,19 +24,6 @@ std::cout << std::endl;
 m.A.d.GoTo(m.X_coor - (strlen("Enter select: ")/2), m.Y_coor + 5);
 m.Selection();
 
-//system("cls");
-
-//m.A.d.draw_border();
-
-//m.A.draw_ships();
-
-//m.A.d.draw_field_player(m.A.H.get_vector());
-
-//m.A.d.draw_field_CPU(m.A.CP.get_vector());
-
-//m.A.d.draw_borders();
-
-//A.Play();
 
 return 0;
 }
